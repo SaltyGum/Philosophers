@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:33:04 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/08 22:59:00 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/09 00:42:16 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ int	main(int argc, char *argv[])
 	if (!blk_init(argv, &blk, argc))
 		return (printf("Wrong Args Fella\n"), 1);
 	if (ft_place_table(&blk))
+	{
+		free (blk.phi);
 		return (printf("Thread Create Failed\n"), 2);
+	}
 	ft_start_dinner(&blk, 0);
 	free (blk.phi);
 	return (0);
