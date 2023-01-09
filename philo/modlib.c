@@ -6,11 +6,20 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 10:15:21 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/08 20:35:15 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/08 22:08:17 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_philo.h"
+
+void	ft_bzero(void *s, size_t n)
+{
+	while (n > 0)
+	{
+		((char *)s)[n - 1] = '\0';
+		n--;
+	}
+}
 
 int	ft_space(char c)
 {

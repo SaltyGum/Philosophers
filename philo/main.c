@@ -6,33 +6,11 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:33:04 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/08 21:27:03 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/08 22:59:00 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_philo.h"
-
-void	*route(void *str)
-{
-	int	i;
-
-	i = 0;
-	while (i < 10000000)
-	{
-		i++;
-	}
-	printf("Hello from %s\n", (char *)str);
-	return (NULL);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	while (n > 0)
-	{
-		((char *)s)[n - 1] = '\0';
-		n--;
-	}
-}
 
 // ARGV -- NB_PHILO, TIME_DIE, TIME_EAT, TIME_SLEEP, "MAX_EAT"
 int	blk_init(char **argv, t_dinner *blk, int argc)
@@ -56,31 +34,42 @@ int	blk_init(char **argv, t_dinner *blk, int argc)
 	return (1);
 }
 
+int	ft_place_table(t_dinner *blk)
+{
+	while (blk->i < blk->nb_phi)
+	{
+		printf("BLK I %d \n", blk->i);
+			if (pthread_create(blk->phi + blk->i, NULL, philo_routine, "PARADISE"))
+			break ;
+		blk->i++;
+	}
+	if (blk->i == blk->nb_phi)
+		return (0);
+	else
+		return (blk->i);
+}
+
+void	ft_start_dinner(t_dinner *blk, int i)
+{
+	while (i < blk->nb_phi)
+	{
+		printf("closing %d\n", i);
+		pthread_join(blk->phi[i], NULL);
+		i++;
+	}
+}
+
 int	main(int argc, char *argv[])
 {
 	t_dinner	blk;
 
 	if (argc < 5 || argc > 6)
-		return (printf("Wrong Args Fella\n"), 1);
+		return (printf("Too Few or Too Many Args Fella\n"), 1);
 	if (!blk_init(argv, &blk, argc))
 		return (printf("Wrong Args Fella\n"), 1);
-	while (blk.i < blk.nb_phi)
-	{
-		printf("BLK I %d \n", blk.i);
-		pthread_create(blk.phi + blk.i, NULL, &route, "PARADISE");
-		blk.i++;
-	}
-	blk.i = 0;
-	while (blk.i < blk.nb_phi)
-	{
-		printf("closing %d\n", blk.i);
-		pthread_join(blk.phi[blk.i], NULL);
-		blk.i++;
-	}
-	blk.i = argc;
-	argc = blk.i;
-	argv[0][0] = 'j';
-	blk.i = 0;
+	if (ft_place_table(&blk))
+		return (printf("Thread Create Failed\n"), 2);
+	ft_start_dinner(&blk, 0);
 	free (blk.phi);
 	return (0);
 }

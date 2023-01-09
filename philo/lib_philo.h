@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:35:20 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/08 21:27:28 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/08 22:20:45 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ typedef struct s_dinner
 	pthread_t	*phi;
 }				t_dinner;
 
-int	ft_atoi(char *str, int i, long int out, int sign);
-int	ft_space(char c);
-int	ft_isdigit(int c);
+int		ft_atoi(char *str, int i, long int out, int sign);
+int		ft_space(char c);
+int		ft_isdigit(int c);
+void	ft_bzero(void *s, size_t n);
+void	*philo_routine(void *str);
 #endif

@@ -6,7 +6,7 @@
 #    By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/18 15:40:49 by jeluiz4           #+#    #+#              #
-#    Updated: 2023/01/08 20:03:43 by jeluiz4          ###   ########.fr        #
+#    Updated: 2023/01/08 22:21:12 by jeluiz4          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,20 @@ SRCS =	main.c \
 		routine.c \
 		time.c
 
-FLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=address
+OBJS = $(SRCS:.c=.o)
 
-all:
-	cc $(FLAGS) $(SRCS) -o $(NAME)
+FLAGS = -Wall -Wextra -Werror -pthread -g #-fsanitize=address
+
+all: $(NAME)
+
+$(NAME):
+	cc $(FLAGS) $(SRCS) -c
+	cc $(FLAGS) $(OBJS) -o $(NAME)
 
 clean:
+	rm -f $(OBJS)
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
