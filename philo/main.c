@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:33:04 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/09 00:42:16 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/09 19:36:07 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,57 @@ int	blk_init(char **argv, t_dinner *blk, int argc)
 	if ((blk->nb_phi) <= 0 || (blk->tm_die <= 0)
 		|| (blk->tm_eat <= 0) || (blk->tm_slp <= 0))
 		return (0);
-	blk->phi = malloc(sizeof(blk->phi) * blk->nb_phi);
-	ft_bzero(blk->phi, sizeof(blk->phi) * blk->nb_phi);
+	blk->m_forks = malloc(sizeof(pthread_mutex_t *) * blk->nb_phi);
 	return (1);
 }
 
-int	ft_place_table(t_dinner *blk)
+void	ft_start_dinner(t_dinner *blk, pthread_t *phi, int i)
 {
+	while (i < blk->nb_phi)
+	{
+		printf("closing %d\n", i);
+		pthread_join(phi[i], NULL);
+		i++;
+		usleep(100);
+	}
+}
+
+int	ft_phi_init(t_dinner *blk)
+{
+	t_philo		*phi;
+	pthread_t	*threads;
+	int			i;
+
+	i = -1;
+	phi = malloc(sizeof(t_philo) * blk->nb_phi);
+	threads = malloc(sizeof(pthread_t) * blk->nb_phi);
+	ft_bzero(threads, sizeof(pthread_t) * blk->nb_phi);
+	while (++i < blk->nb_phi)
+	{
+		phi[i].id = i + 1;
+		phi[i].eated = 0;
+		phi[i].blk = blk;
+		if (pthread_create(&threads[i], NULL, &philo_routine, &phi[i]))
+		{
+			puts("entrei\n");
+			free(phi);
+			free(threads);
+			return (1);
+		}
+	}
+	ft_start_dinner(blk, threads, 0);
+	free(threads);
+	free(phi);
+	return (0);
+}
+
+/*int	ft_place_table(t_dinner *blk, t_philo *phi)
+{
+	blk->tm_start = ft_get_time();
 	while (blk->i < blk->nb_phi)
 	{
 		printf("BLK I %d \n", blk->i);
-			if (pthread_create(blk->phi + blk->i, NULL, philo_routine, "PARADISE"))
+			if (pthread_create((phi[blk->i])->t_phi, NULL, philo_routine, blk))
 			break ;
 		blk->i++;
 	}
@@ -47,17 +87,8 @@ int	ft_place_table(t_dinner *blk)
 		return (0);
 	else
 		return (blk->i);
-}
+}*/
 
-void	ft_start_dinner(t_dinner *blk, int i)
-{
-	while (i < blk->nb_phi)
-	{
-		printf("closing %d\n", i);
-		pthread_join(blk->phi[i], NULL);
-		i++;
-	}
-}
 
 int	main(int argc, char *argv[])
 {
@@ -67,12 +98,11 @@ int	main(int argc, char *argv[])
 		return (printf("Too Few or Too Many Args Fella\n"), 1);
 	if (!blk_init(argv, &blk, argc))
 		return (printf("Wrong Args Fella\n"), 1);
-	if (ft_place_table(&blk))
+	//ft_phi_init(&blk, &phi);
+	if (ft_phi_init(&blk))
 	{
-		free (blk.phi);
+		//Dar free na matrix de philos
 		return (printf("Thread Create Failed\n"), 2);
 	}
-	ft_start_dinner(&blk, 0);
-	free (blk.phi);
 	return (0);
 }
