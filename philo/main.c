@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:33:04 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/09 19:36:07 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/10 13:01:24 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	ft_start_dinner(t_dinner *blk, pthread_t *phi, int i)
 {
 	while (i < blk->nb_phi)
 	{
-		printf("closing %d\n", i);
 		pthread_join(phi[i], NULL);
+		printf("closing %d\n", i);
 		i++;
 		usleep(100);
 	}
@@ -54,6 +54,7 @@ int	ft_phi_init(t_dinner *blk)
 	phi = malloc(sizeof(t_philo) * blk->nb_phi);
 	threads = malloc(sizeof(pthread_t) * blk->nb_phi);
 	ft_bzero(threads, sizeof(pthread_t) * blk->nb_phi);
+	blk->tm_start = ft_get_time();
 	while (++i < blk->nb_phi)
 	{
 		phi[i].id = i + 1;
