@@ -6,7 +6,7 @@
 #    By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/18 15:40:49 by jeluiz4           #+#    #+#              #
-#    Updated: 2023/01/10 18:47:52 by jeluiz4          ###   ########.fr        #
+#    Updated: 2023/01/10 21:27:53 by jeluiz4          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ SRCS =	main.c \
 		modlib.c \
 		ignite.c \
 		routine.c \
-		time.c
+		time.c \
+		route.c
 
 OBJS = $(SRCS:.c=.o)
 
-FLAGS = -Wall -Wextra -Werror -pthread -g #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror -pthread -g #-fsanitize=address,undefined
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:15:37 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/10 18:54:11 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/10 21:24:55 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	dinner_init(char **argv, t_dinner *blk, int argc)
 	blk->tm_die = ft_atoi(argv[2], 0, 0, 1);
 	blk->tm_eat = ft_atoi(argv[3], 0, 0, 1);
 	blk->tm_slp = ft_atoi(argv[4], 0, 0, 1);
+	blk->alive = 0;
 	if (argc == 6)
 	{
 		blk->max_eat = ft_atoi(argv[5], 0, 0, 1);
@@ -29,28 +30,18 @@ int	dinner_init(char **argv, t_dinner *blk, int argc)
 	if ((blk->nb_phi) <= 0 || (blk->tm_die <= 0)
 		|| (blk->tm_eat <= 0) || (blk->tm_slp <= 0))
 		return (0);
-	if	(ft_build_door(blk, 0))
+	if (ft_build_door(blk, 0))
 	{
-		return(0);
+		return (0);
 	}
 	return (1);
 }
 
 int	ft_init_mutex(t_dinner *blk)
 {
-	
-	blk->m_forks = malloc(sizeof(pthread_mutex_t *) * blk->nb_phi);
+	blk->m_forks = malloc(sizeof(pthread_mutex_t) * blk->nb_phi);
 	if (blk->m_forks == NULL)
 		return (1);
-	/*blk->check = malloc(sizeof(pthread_mutex_t *));
-	if (blk->check == NULL)
-		return (1);
-	blk->eat_time = malloc(sizeof(pthread_mutex_t *));
-	if (blk->eat_time == NULL)
-		return (1);
-	blk->printer = malloc(sizeof(pthread_mutex_t *));
-	if (blk->printer == NULL)
-		return (1);*/
 	return (0);
 }
 
@@ -71,7 +62,9 @@ int	ft_build_door(t_dinner *blk, int i)
 		return (1);
 	if (pthread_mutex_init(&blk->eat_time, 0))
 		return (1);
-	if (pthread_mutex_init(&blk->check, 0))//Talvez não use
+	if (pthread_mutex_init(&blk->check, 0)) //Talvez não use
+		return (1);
+	if (pthread_mutex_init(&blk->end_table, 0))
 		return (1);
 	return (0);
 }
@@ -81,11 +74,34 @@ void	ft_start_dinner(t_dinner *blk, pthread_t *phi, int i)
 	while (i < blk->nb_phi)
 	{
 		pthread_join(phi[i], NULL);
-		printf("closing %d\n", i);
 		i++;
-		usleep(100);
 	}
 }
+
+int	phi_malloc(t_philo **phi, pthread_t **threads, t_dinner *blk)
+{
+	*phi = malloc(sizeof(t_philo) * (blk->nb_phi + 1));
+	if (*phi == NULL)
+		return (1);
+	*threads = malloc(sizeof(pthread_t) * blk->nb_phi);
+	if (*threads == NULL)
+	{
+		free(*phi);
+		return (1);
+	}
+	ft_bzero(*threads, sizeof(pthread_t) * blk->nb_phi);
+	return (0);
+}
+
+/*int	ft_waiter_start(t_dinner *blk)
+{
+	if (blk->nb_phi > 1)
+	{
+		if (pthread_create(&blk->waiter, NULL, &waiter_routine, blk))
+			return (1);
+	}
+	return (0);
+}*/
 
 int	ft_phi_init(t_dinner *blk)
 {
@@ -93,32 +109,23 @@ int	ft_phi_init(t_dinner *blk)
 	pthread_t	*threads;
 	int			i;
 
-	phi = malloc(sizeof(t_philo) * blk->nb_phi);
-	if (phi == NULL)
+	phi = NULL;
+	threads = NULL;
+	if (phi_malloc(&phi, &threads, blk))
 		return (1);
-	threads = malloc(sizeof(pthread_t) * blk->nb_phi);
-	if (threads == NULL)
-	{
-		free(phi);
-		return (1);
-	}
-	ft_bzero(threads, sizeof(pthread_t) * blk->nb_phi);
 	blk->tm_start = ft_get_time();
 	i = -1;
 	while (++i < blk->nb_phi)
 	{
 		phi[i].id = i + 1;
 		phi[i].eated = 0;
+		phi[i].last_meal = blk->tm_start;
 		phi[i].blk = blk;
 		if (pthread_create(&threads[i], NULL, &philo_routine, &phi[i]))
-		{
-			free(phi);
-			free(threads);
-			return (1);
-		}
+			return (free(phi), free(threads), 1);
 	}
-	//ft_start_dinner(blk, threads, 0);
-	//free(threads);
-	//free(phi);
-	return (0);
+	/*if	(ft_waiter_start(blk))
+		return (free(threads), free(phi), 0);*/
+	ft_start_dinner(blk, threads, 0);
+	return (free(threads), free(phi), 0);
 }
