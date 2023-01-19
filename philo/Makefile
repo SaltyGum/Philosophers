@@ -6,20 +6,21 @@
 #    By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/18 15:40:49 by jeluiz4           #+#    #+#              #
-#    Updated: 2023/01/19 15:26:58 by jeluiz4          ###   ########.fr        #
+#    Updated: 2023/01/19 17:33:16 by jeluiz4          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRCS =	main.c \
-		modlib.c \
+SRCS =	drop_fork.c \
 		ignite.c \
+		main.c \
+		modlib.c \
+		pick_fork.c \
+		route.c \
 		routine.c \
 		time.c \
-		route.c \
-		drop_fork.c \
-		pick_fork.c
+		waiter.c
 
 OBJS = $(SRCS:.c=.o)
 

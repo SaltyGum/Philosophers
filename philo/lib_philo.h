@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:35:20 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/19 16:27:39 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:35:53 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,17 @@ int		dinner_init(char **argv, t_dinner *blk, int argc);
 void	ft_nap_time(t_philo *phi, time_t slp);
 time_t	ft_get_time(void);
 
-// ROUTINES
+// PHILO ROUTINES
 void	*philo_routine(void *str);
 void	sleep_route(t_philo *phi);
 void	food_route(t_philo *phi);
 void	think_route(t_philo *phi);
+
+// WAITER ROUTINES
+int		ft_waiter_start(t_philo *phi, t_dinner *blk);
+void	*waiter_routine(void *entry);
+int		philo_satisfied(t_philo *phi);
+int		philo_alive(t_philo *phi);
 
 // PRINTER
 void	ft_print_status(t_philo *phi, char *str);

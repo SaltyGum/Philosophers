@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:15:37 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/19 16:14:35 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:29:50 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ void	ft_start_dinner(t_dinner *blk, pthread_t *phi, int i)
 		pthread_join(phi[i], NULL);
 		i++;
 	}
+	if (blk->nb_phi > 1)
+	{
+		pthread_join(blk->waiter, NULL);
+	}
 }
 
 int	phi_malloc(t_philo **phi, pthread_t **threads, t_dinner *blk)
@@ -91,16 +95,6 @@ int	phi_malloc(t_philo **phi, pthread_t **threads, t_dinner *blk)
 	ft_bzero(*threads, sizeof(pthread_t) * blk->nb_phi);
 	return (0);
 }
-
-/*int	ft_waiter_start(t_dinner *blk)
-{
-	if (blk->nb_phi > 1)
-	{
-		if (pthread_create(&blk->waiter, NULL, &waiter_routine, blk))
-			return (1);
-	}
-	return (0);
-}*/
 
 int	ft_phi_init(t_dinner *blk)
 {
@@ -125,8 +119,8 @@ int	ft_phi_init(t_dinner *blk)
 		if (pthread_create(&threads[i], NULL, &philo_routine, &phi[i]))
 			return (free(phi), free(threads), 1);
 	}
-	/*if	(ft_waiter_start(blk))
-		return (free(threads), free(phi), 0);*/
+	if	(ft_waiter_start(phi, blk))
+		return (free(threads), free(phi), 1);
 	ft_start_dinner(blk, threads, 0);
 	return (free(threads), free(phi), 0);
 }
