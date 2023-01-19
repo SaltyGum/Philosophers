@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 21:17:02 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/19 16:15:22 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:41:59 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	food_route(t_philo *phi)
 	ft_up_forks(phi, RIGHT);
 	ft_up_forks(phi, LEFT);
 	ft_print_status(phi, "is eating");
-	ft_eating(phi);	
+	ft_eating(phi);
 	ft_down_forks(phi, RIGHT);
 	ft_down_forks(phi, LEFT);
 }

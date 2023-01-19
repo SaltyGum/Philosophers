@@ -6,11 +6,24 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:33:04 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/19 16:14:02 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:46:26 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_philo.h"
+
+void	ft_start_dinner(t_dinner *blk, pthread_t *phi, int i)
+{
+	while (i < blk->nb_phi)
+	{
+		pthread_join(phi[i], NULL);
+		i++;
+	}
+	if (blk->nb_phi > 1)
+	{
+		pthread_join(blk->waiter, NULL);
+	}
+}
 
 void	mutex_exit(t_dinner *blk, int i)
 {
@@ -21,7 +34,6 @@ void	mutex_exit(t_dinner *blk, int i)
 	}
 	pthread_mutex_destroy(&blk->end_table);
 	pthread_mutex_destroy(&blk->printer);
-	pthread_mutex_destroy(&blk->check);
 }
 
 int	main(int argc, char *argv[])

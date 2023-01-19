@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:33:30 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/19 17:36:57 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:40:26 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	philo_satisfied(t_philo *phi)
 
 void	*waiter_routine(void *entry)
 {
-	t_philo *phi;
+	t_philo	*phi;
 	int		i;
 
 	phi = (t_philo *)entry;

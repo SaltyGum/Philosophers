@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 22:07:13 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/19 16:33:02 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:41:16 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_nap_time(t_philo *phi, time_t slp)
 	time_t	wakeup;
 
 	wakeup = ft_get_time() + slp;
-	while (ft_get_time() < wakeup) // Checar morte durante o sono e matar;
+	while (ft_get_time() < wakeup)
 	{
 		pthread_mutex_lock(&phi->blk->end_table);
 		if (phi->blk->a_live == 1)
@@ -58,7 +58,7 @@ void	*philo_routine(void *entry)
 	while (42)
 	{
 		pthread_mutex_lock(&phi->blk->end_table);
-		if	(phi->blk->a_live == 1)
+		if (phi->blk->a_live == 1)
 		{
 			pthread_mutex_unlock(&phi->blk->end_table);
 			break ;
