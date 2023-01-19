@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:15:37 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/10 21:24:55 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 16:14:35 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	dinner_init(char **argv, t_dinner *blk, int argc)
 	blk->tm_die = ft_atoi(argv[2], 0, 0, 1);
 	blk->tm_eat = ft_atoi(argv[3], 0, 0, 1);
 	blk->tm_slp = ft_atoi(argv[4], 0, 0, 1);
-	blk->alive = 0;
+	blk->a_live = 0;
+	blk->sf_phi = 0;
 	if (argc == 6)
 	{
 		blk->max_eat = ft_atoi(argv[5], 0, 0, 1);
@@ -59,8 +60,6 @@ int	ft_build_door(t_dinner *blk, int i)
 		i++;
 	}
 	if (pthread_mutex_init(&blk->printer, 0))
-		return (1);
-	if (pthread_mutex_init(&blk->eat_time, 0))
 		return (1);
 	if (pthread_mutex_init(&blk->check, 0)) //Talvez não use
 		return (1);
@@ -121,6 +120,8 @@ int	ft_phi_init(t_dinner *blk)
 		phi[i].eated = 0;
 		phi[i].last_meal = blk->tm_start;
 		phi[i].blk = blk;
+		if (pthread_mutex_init(&phi[i].plate, 0))
+			return (free(phi), free(threads), 1);
 		if (pthread_create(&threads[i], NULL, &philo_routine, &phi[i]))
 			return (free(phi), free(threads), 1);
 	}

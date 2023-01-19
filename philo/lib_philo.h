@@ -6,7 +6,7 @@
 /*   By: jeluiz4 <jeffluiz97@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 15:35:20 by jeluiz4           #+#    #+#             */
-/*   Updated: 2023/01/19 15:25:31 by jeluiz4          ###   ########.fr       */
+/*   Updated: 2023/01/19 16:27:39 by jeluiz4          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@
 typedef struct s_dinner
 {
 	int				i;
-	int				alive;
+	int				a_live;
 	int				nb_phi;
 	time_t			tm_start;
 	int				tm_eat;
 	int				tm_slp;
 	int				tm_die;
 	int				max_eat;
+	int				sf_phi;
 	pthread_t		waiter;
 	pthread_mutex_t	end_table;
 	pthread_mutex_t	*m_forks;
 	pthread_mutex_t	printer;
-	pthread_mutex_t	eat_time;
-	pthread_mutex_t	check; //Vai que precisa de uma pausa pra checar algo né;
+	pthread_mutex_t	check;
 }				t_dinner;
 
 typedef struct s_philo
@@ -48,8 +48,7 @@ typedef struct s_philo
 	time_t			last_meal;
 	time_t			life_end;
 	t_dinner		*blk;
-	pthread_mutex_t	r_fork;
-	pthread_mutex_t	l_fork;
+	pthread_mutex_t	plate;
 }				t_philo;
 
 // MODLIB
